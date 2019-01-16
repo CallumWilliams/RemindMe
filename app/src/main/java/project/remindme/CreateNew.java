@@ -1,5 +1,6 @@
 package project.remindme;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ public class CreateNew extends AppCompatActivity {
                 String desc = tv_name.getText().toString();
 
                 // move on to next view: SelectLocation Activity
+                startActivity(new Intent(CreateNew.this, SelectLocation.class));
 
             }
         });
