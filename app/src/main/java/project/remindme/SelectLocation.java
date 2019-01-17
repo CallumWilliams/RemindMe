@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.Task;
 public class SelectLocation extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Reminder r;
 
     private final static int PLACE_PICKER_REQUEST = 1;
     private boolean mLocationPermissionsGranted = false;
@@ -44,7 +45,7 @@ public class SelectLocation extends FragmentActivity implements OnMapReadyCallba
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == PLACE_PICKER_REQUEST) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
                 String placeName = place.getName().toString();
@@ -66,6 +67,8 @@ public class SelectLocation extends FragmentActivity implements OnMapReadyCallba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_location);
         mLocationPermissionsGranted = hasLocationPermissions();
+        r = (Reminder) getIntent().getSerializableExtra("Reminder");
+        Log.d("REMINDERRECEIVED", r.getName());
 
         try {
             startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);

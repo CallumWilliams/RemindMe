@@ -2,11 +2,14 @@ package project.remindme;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.Serializable;
 
 public class CreateNew extends AppCompatActivity {
 
@@ -23,10 +26,20 @@ public class CreateNew extends AppCompatActivity {
                 TextView tv_desc = findViewById(R.id.textbox_desc);
 
                 String name = tv_name.getText().toString();
-                String desc = tv_name.getText().toString();
+                String desc = tv_desc.getText().toString();
 
-                // move on to next view: SelectLocation Activity
-                startActivity(new Intent(CreateNew.this, SelectLocation.class));
+                if (name.isEmpty()) {
+                    Toast.makeText(CreateNew.this, "The field 'Reminder Name' is required.", Toast.LENGTH_SHORT);
+                } else {
+                    // save reminder and move on to SelectLocation activity
+                    Reminder r = new Reminder(name, desc);
+                    Intent i = new Intent(CreateNew.this, SelectLocation.class);
+                    i.putExtra("Reminder", r);
+
+                    startActivity(i);
+                }
+
+
 
             }
         });
