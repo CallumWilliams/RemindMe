@@ -29,7 +29,7 @@ public class CreateNew extends AppCompatActivity {
                 String desc = tv_desc.getText().toString();
 
                 if (name.isEmpty()) {
-                    Toast.makeText(CreateNew.this, "The field 'Reminder Name' is required.", Toast.LENGTH_SHORT);
+                    Toast.makeText(CreateNew.this, "The field 'Reminder Name' is required.", Toast.LENGTH_SHORT).show();
                 } else {
                     // save reminder and move on to SelectLocation activity
                     Reminder r = new Reminder(name, desc);
