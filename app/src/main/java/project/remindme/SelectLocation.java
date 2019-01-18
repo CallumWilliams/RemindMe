@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -55,6 +56,11 @@ public class SelectLocation extends FragmentActivity implements GoogleApiClient.
         Toast.makeText(this, connectionResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
     }
 
+    public void hideSoftKeyboard() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+    }
+
     private GoogleMap gMap;
     private Reminder r;
     private String location_name;
@@ -86,7 +92,7 @@ public class SelectLocation extends FragmentActivity implements GoogleApiClient.
 
         autoCompleteTextView = findViewById(R.id.input_search);
         autoCompleteTextView.setThreshold(3);
-
+        autoCompleteTextView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         autoCompleteTextView.setOnItemClickListener(autoCompleteClickListener);
 
         placeArrayAdapter = new PlaceArrayAdapter(this, android.R.layout.simple_list_item_1, BOUNDS, null);
@@ -116,9 +122,7 @@ public class SelectLocation extends FragmentActivity implements GoogleApiClient.
                         if(task.isSuccessful()){
                             Location currentLocation = (Location) task.getResult();
 
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
-                                    DEFAULT_ZOOM,
-                                    "My Location");
+                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My Location");
 
                         } else {
                             Toast.makeText(SelectLocation.this, "unable to get current location", Toast.LENGTH_SHORT).show();
@@ -138,12 +142,7 @@ public class SelectLocation extends FragmentActivity implements GoogleApiClient.
             MarkerOptions options = new MarkerOptions().position(latLng).title(title);
             gMap.addMarker(options);
         }
-
         hideSoftKeyboard();
-    }
-
-    private void hideSoftKeyboard() {
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     private AdapterView.OnItemClickListener autoCompleteClickListener = new AdapterView.OnItemClickListener() {
@@ -172,7 +171,6 @@ public class SelectLocation extends FragmentActivity implements GoogleApiClient.
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Toast.makeText(this, "MAP READY", Toast.LENGTH_SHORT).show();
         gMap = googleMap;
 
         if (locationPermissionsGranted) {
