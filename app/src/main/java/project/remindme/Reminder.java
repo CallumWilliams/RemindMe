@@ -6,6 +6,7 @@ public class Reminder implements Serializable {
 
     private String name;
     private String desc;
+    private String destination;
 
     public Reminder(String n, String d) {
         this.name = n;
@@ -27,4 +28,8 @@ public class Reminder implements Serializable {
     public String getDescription() {
         return desc;
     }
+
+    public void setDestination(String d) { this.destination = d; }
+
+    public String getDestination() { return this.destination; }
 }

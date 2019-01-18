@@ -22,4 +22,29 @@
         android:textColor="#000"
         android:hint="@string/text_autocomplete_widget" />
 
+    <TextView
+        android:id="@+id/textview_selected_location"
+        android:layout_width="342dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/map"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="21dp"
+        android:layout_marginLeft="21dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/button_build_reminder"
+        android:layout_width="136dp"
+        android:layout_height="62dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="19dp"
+        android:text="Create Reminder" />
+
 </RelativeLayout>

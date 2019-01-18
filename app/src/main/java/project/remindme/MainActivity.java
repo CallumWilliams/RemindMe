@@ -8,13 +8,31 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ArrayList<String> listItems = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
+        ListView listView = findViewById(R.id.list_reminder);
+        listView.setAdapter(adapter);
+
+        // check if a previous intent has passed any reminders
+        Reminder to_add = (Reminder) getIntent().getSerializableExtra("CompleteReminder");
+        if (to_add != null) {
+            addItem(to_add);
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -26,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, CreateNew.class));
             }
         });
+    }
+
+    protected void addItem(Reminder r) {
+        listItems.add(r.getName());
     }
 
     @Override

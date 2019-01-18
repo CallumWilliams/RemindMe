@@ -38,6 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <ListView
+        android:id="@+id/list_reminder"
         android:layout_width="368dp"
         android:layout_height="385dp"
         android:layout_marginStart="16dp"

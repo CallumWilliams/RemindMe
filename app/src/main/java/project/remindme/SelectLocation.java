@@ -2,6 +2,7 @@ package project.remindme;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -17,6 +18,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -38,6 +41,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import org.w3c.dom.Text;
 
 public class SelectLocation extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
 
@@ -68,6 +73,8 @@ public class SelectLocation extends FragmentActivity implements GoogleApiClient.
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Boolean locationPermissionsGranted;
     private AutoCompleteTextView autoCompleteTextView;
+    private TextView selected_location;
+    private Button create_reminder;
     private GoogleApiClient googleApiClient;
     private PlaceArrayAdapter placeArrayAdapter;
 
@@ -80,7 +87,19 @@ public class SelectLocation extends FragmentActivity implements GoogleApiClient.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_location);
 
+        selected_location = findViewById(R.id.textview_selected_location);
+        create_reminder = findViewById(R.id.button_build_reminder);
         r = (Reminder) getIntent().getSerializableExtra("Reminder");
+
+        create_reminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                r.setDestination(location_name);
+                Intent i = new Intent(SelectLocation.this, MainActivity.class);
+                i.putExtra("CompleteReminder", r);
+                startActivity(i);
+            }
+        });
 
         googleApiClient = new GoogleApiClient.Builder(SelectLocation.this)
                 .addApi(Places.GEO_DATA_API)
@@ -165,6 +184,7 @@ public class SelectLocation extends FragmentActivity implements GoogleApiClient.
             final Place place = places.get(0);
             CharSequence attributions = places.getAttributions();
             location_name = place.getName().toString();
+            selected_location.setText("Location: " + location_name);
             moveCamera(place.getLatLng(), DEFAULT_ZOOM, place.getName().toString());
         }
     };
