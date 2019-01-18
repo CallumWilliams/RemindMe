@@ -9,14 +9,15 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="50dp"
         tools:context=".SelectLocation" />
 
     <AutoCompleteTextView
         android:id="@+id/input_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:textSize="15dp"
         android:textColor="#000"
         android:hint="@string/text_autocomplete_widget" />
