@@ -69,6 +69,7 @@ public class SelectLocation extends FragmentActivity implements GoogleApiClient.
     private GoogleMap gMap;
     private Reminder r;
     private String location_name;
+    private LatLng location_coords;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Boolean locationPermissionsGranted;
@@ -95,6 +96,8 @@ public class SelectLocation extends FragmentActivity implements GoogleApiClient.
             @Override
             public void onClick(View v) {
                 r.setDestination(location_name);
+                r.setLatitude(location_coords.latitude);
+                r.setLongitude(location_coords.longitude);
                 Intent i = new Intent(SelectLocation.this, MainActivity.class);
                 i.putExtra("CompleteReminder", r);
                 startActivity(i);
@@ -184,6 +187,7 @@ public class SelectLocation extends FragmentActivity implements GoogleApiClient.
             final Place place = places.get(0);
             CharSequence attributions = places.getAttributions();
             location_name = place.getName().toString();
+            location_coords = place.getLatLng();
             selected_location.setText("Location: " + location_name);
             moveCamera(place.getLatLng(), DEFAULT_ZOOM, place.getName().toString());
         }

@@ -1,10 +1,12 @@
 package project.remindme;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,20 +18,32 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<String> listItems = new ArrayList<String>();
+    Global global = new Global();
+    ReminderDB reminderDB = global.reminder_db;
+
+    private ArrayList<String> listItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // setup list
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         ListView listView = findViewById(R.id.list_reminder);
         listView.setAdapter(adapter);
 
+        // initial parse of database to collect elements
+        String db_load = reminderDB.loadHandler();
+        if (!db_load.isEmpty()) {
+            // parse db_load and add elements
+            Log.d("DBCONTENT", db_load);
+        }
+
         // check if a previous intent has passed any reminders
         Reminder to_add = (Reminder) getIntent().getSerializableExtra("CompleteReminder");
         if (to_add != null) {
+            reminderDB.addHandler(to_add);
             addItem(to_add);
         }
 
