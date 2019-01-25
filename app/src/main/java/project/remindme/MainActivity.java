@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // check database. If it has any elements, add them to the list
-        reminderList = reminderDB.loadAllReminders();
-        if (reminderList.size() != 0) {
+        if (reminderDB.countRecords() > 0) {
+            reminderList = reminderDB.loadAllReminders();
             for (int i = 0; i < reminderList.size(); i++) {
                 addItem(reminderList.get(i));
             }

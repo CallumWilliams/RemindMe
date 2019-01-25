@@ -74,6 +74,15 @@ public class ReminderDB extends SQLiteOpenHelper {
         return result;
     }
 
+    public int countRecords() {
+        String query = "SELECT * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
     public void addHandler(Reminder r) {
         ContentValues val = new ContentValues();
 
