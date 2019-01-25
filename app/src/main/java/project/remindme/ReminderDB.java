@@ -5,8 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.location.places.ui.PlacePicker;
+
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class ReminderDB extends SQLiteOpenHelper {
 
@@ -21,15 +25,15 @@ public class ReminderDB extends SQLiteOpenHelper {
     public static final String COL_LAT = "ReminderLat";
     public static final String COL_LNG = "ReminderLng";
 
-    public ReminderDB(Context c, String n, SQLiteDatabase.CursorFactory f, int version) {
-        super(c, n, f, version);
+    public ReminderDB(Context c) {
+        super(c, DB_NAME, null, DB_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         // create table
         String CREATE = "CREATE TABLE " + TABLE_NAME + " (" +
-                COL_ID + " INTEGER PRIMARY KEY " +
+                COL_ID + " INTEGER PRIMARY KEY, " +
                 COL_NAME + " TEXT, " +
                 COL_DESC + " TEXT, " +
                 COL_DEST + " TEXT, " +
@@ -52,8 +56,18 @@ public class ReminderDB extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         while (cursor.moveToNext()) {
             int current = cursor.getInt(0);
-            String current_str = cursor.getString(1);
-            result += String.valueOf((current)) + " " + current_str + System.getProperty("line.separator");
+            String current_name = cursor.getString(1);
+            String current_desc = cursor.getString(2);
+            String current_dest = cursor.getString(3);
+            double current_lat = cursor.getDouble(4);
+            double current_lng = cursor.getDouble(5);
+            result += String.valueOf((current)) + " " +
+                    current_name + " " +
+                    current_desc + " " +
+                    current_dest + " " +
+                    String.valueOf(current_lat) + " " +
+                    String.valueOf(current_lng) + " " +
+                    System.getProperty("line.separator");
         }
         cursor.close();
         db.close();
@@ -126,6 +140,23 @@ public class ReminderDB extends SQLiteOpenHelper {
         args.put(COL_LNG, lng);
 
         return db.update(TABLE_NAME, args, COL_ID + "=" + ID, null) > 0;
+    }
+
+    public ArrayList<Reminder> loadAllReminders() {
+        ArrayList<Reminder> result = new ArrayList<>();
+
+        String fullDbLoad = loadHandler();
+
+        // parse line by line
+        String[] line = fullDbLoad.split("\n");
+        for (int i = 0; i < line.length; i++) {
+            // parse out the individual elements
+            String[] elements = line[i].split(" ");
+            Reminder to_add = findHandler(Integer.parseInt(elements[0]));
+            result.add(to_add);
+        }
+
+        return result;
     }
 
 }

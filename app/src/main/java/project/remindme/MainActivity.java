@@ -15,13 +15,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity {
 
-    Global global = new Global();
-    ReminderDB reminderDB = global.reminder_db;
+    ReminderDB reminderDB = new ReminderDB(this);
 
     private ArrayList<String> listItems = new ArrayList<>();
+    private ArrayList<Reminder> reminderList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +34,18 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.list_reminder);
         listView.setAdapter(adapter);
 
-        // initial parse of database to collect elements
-        String db_load = reminderDB.loadHandler();
-        if (!db_load.isEmpty()) {
-            // parse db_load and add elements
-            Log.d("DBCONTENT", db_load);
-        }
-
         // check if a previous intent has passed any reminders
         Reminder to_add = (Reminder) getIntent().getSerializableExtra("CompleteReminder");
         if (to_add != null) {
             reminderDB.addHandler(to_add);
-            addItem(to_add);
+        }
+
+        // check database. If it has any elements, add them to the list
+        reminderList = reminderDB.loadAllReminders();
+        if (reminderList.size() != 0) {
+            for (int i = 0; i < reminderList.size(); i++) {
+                addItem(reminderList.get(i));
+            }
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

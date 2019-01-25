@@ -15,8 +15,7 @@ import java.util.Random;
 
 public class CreateNew extends AppCompatActivity {
 
-    Global global = new Global();
-    ReminderDB reminderDB = global.reminder_db;
+    ReminderDB reminderDB = new ReminderDB(this);
 
     // number range [1, 999999]
     final int RAND_UPPER_LIM = 999998;
