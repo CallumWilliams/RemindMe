@@ -41,7 +41,8 @@
 
         <activity
             android:name=".SelectLocation"
-            android:label="@string/title_activity_select_location"></activity>
+            android:label="@string/title_activity_select_location" />
+        <activity android:name=".ViewReminder"></activity>
     </application>
 
 </manifest>

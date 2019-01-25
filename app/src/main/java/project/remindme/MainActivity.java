@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     ReminderDB reminderDB = new ReminderDB(this);
 
+    ListView listView;
+
     private ArrayList<String> listItems = new ArrayList<>();
     private ArrayList<Reminder> reminderList = new ArrayList<>();
 
@@ -30,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // setup list
+        listView = findViewById(R.id.list_reminder);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
-        ListView listView = findViewById(R.id.list_reminder);
         listView.setAdapter(adapter);
 
         // check if a previous intent has passed any reminders
@@ -59,6 +62,19 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, CreateNew.class));
             }
         });
+
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String clicked = listView.getItemAtPosition(position).toString();
+                Reminder search = reminderDB.findHandler(clicked);
+                Intent i = new Intent(MainActivity.this, ViewReminder.class);
+                i.putExtra("SEARCHED", search);
+                startActivity(i);
+            }
+        });
+
     }
 
     protected void addItem(Reminder r) {

@@ -89,6 +89,29 @@ public class ReminderDB extends SQLiteOpenHelper {
         db.close();
     }
 
+    public Reminder findHandler(String name) {
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_NAME + "  = '" + name + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Reminder reminder = new Reminder();
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+
+            reminder.setID(Integer.parseInt(cursor.getString(0)));
+            reminder.setName(cursor.getString(1));
+            reminder.setDescription(cursor.getString(2));
+            reminder.setDestination(cursor.getString(3));
+            reminder.setLatitude(cursor.getDouble(4));
+            reminder.setLongitude(cursor.getDouble(5));
+
+            cursor.close();
+        } else {
+            reminder = null;
+        }
+        db.close();
+        return reminder;
+    }
+
     public Reminder findHandler(int id) {
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_ID + "  = '" + String.valueOf(id) + "'";
         SQLiteDatabase db = this.getWritableDatabase();
