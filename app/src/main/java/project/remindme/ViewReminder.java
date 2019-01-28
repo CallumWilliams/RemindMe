@@ -9,8 +9,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-public class ViewReminder extends AppCompatActivity {
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+public class ViewReminder extends AppCompatActivity implements OnMapReadyCallback {
 
     AlertDialog.Builder delete_dialog;
 
@@ -18,6 +26,9 @@ public class ViewReminder extends AppCompatActivity {
     ReminderDB reminderDB = new ReminderDB(this);
 
     Button btn_back, btn_edit, btn_delete;
+
+    TextView tv_name, tv_desc, tv_dest;
+    GoogleMap googleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +42,14 @@ public class ViewReminder extends AppCompatActivity {
         btn_back = findViewById(R.id.button_return);
         btn_edit = findViewById(R.id.button_edit);
         btn_delete = findViewById(R.id.button_delete);
+
+        tv_name = findViewById(R.id.textview_current_name);
+        tv_desc = findViewById(R.id.textview_current_description);
+        tv_dest = findViewById(R.id.textview_current_location);
+
+        tv_name.setText(viewed_reminder.getName());
+        tv_desc.setText(viewed_reminder.getDescription());
+        tv_dest.setText(viewed_reminder.getDestination());
 
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,5 +89,16 @@ public class ViewReminder extends AppCompatActivity {
             }
         });
 
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap gMap) {
+        LatLng location = new LatLng(viewed_reminder.getLatitude(), viewed_reminder.getLongitude());
+        gMap.addMarker(new MarkerOptions().position(location));
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 15.0f));
+        gMap.getUiSettings().setScrollGesturesEnabled(false);
     }
 }

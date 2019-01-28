@@ -11,7 +11,6 @@ public class Reminder implements Serializable {
     private String desc;
 
     private String destination;
-
     // stored separately as the LatLng class isn't serializable
     private double latitude;
     private double longitude;
