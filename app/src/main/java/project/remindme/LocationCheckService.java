@@ -1,24 +1,18 @@
 package project.remindme;
 
-import android.app.Service;
+import android.app.IntentService;
 import android.content.Intent;
-import android.os.IBinder;
-import android.widget.Toast;
+import android.util.Log;
 
-public class LocationCheckService extends Service {
+public class LocationCheckService extends IntentService {
 
-    @Override
-    public IBinder onBind(Intent i) {
-        return null;
-    }
-
-    public void onDestroy() {
-        Toast.makeText(this, "My Service Stopped", Toast.LENGTH_LONG).show();
+    public LocationCheckService() {
+        super("LocationCheckService");
     }
 
     @Override
-    public void onStart(Intent intent, int startid) {
-        Toast.makeText(this, "My Service Started", Toast.LENGTH_LONG).show();
+    protected void onHandleIntent(Intent intent) {
+        String dataString = intent.getDataString();
+        Log.i("BACKGROUNDSERVICESTARTED", dataString);
     }
-
 }

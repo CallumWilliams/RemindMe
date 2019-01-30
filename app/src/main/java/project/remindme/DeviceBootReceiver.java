@@ -10,10 +10,11 @@ import android.widget.Toast;
 
 public class DeviceBootReceiver extends BroadcastReceiver {
 
+    @Override
     public void onReceive(Context c, Intent arg) {
-        Intent intent = new Intent(c, Service.class);
-        c.startService(intent);
-        Log.i("Autostart", "started");
+        Intent i = new Intent(c, LocationCheckService.class);
+        c.startService(i);
+        Log.i("DEVICEBOOTRECEIVER", "ACTIVE");
     }
 
 }
