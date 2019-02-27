@@ -143,7 +143,8 @@ public class SelectLocation extends FragmentActivity implements GoogleApiClient.
                     public void onComplete(@NonNull Task task) {
                         if(task.isSuccessful()){
                             Location currentLocation = (Location) task.getResult();
-
+                            selected_location.setText("Current Location");
+                            location_coords = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My Location");
 
                         } else {
