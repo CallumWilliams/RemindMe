@@ -3,48 +3,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+    <fragment android:id="@+id/autocomplete_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_marginTop="50dp"
-        tools:context=".SelectLocation" />
-
-    <AutoCompleteTextView
-        android:id="@+id/input_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textSize="15dp"
-        android:textColor="#000"
-        android:hint="@string/text_autocomplete_widget" />
-
-    <TextView
-        android:id="@+id/textview_selected_location"
-        android:layout_width="342dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/map"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="21dp"
-        android:layout_marginLeft="21dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginRight="21dp"
-        android:textSize="24sp" />
-
-    <Button
-        android:id="@+id/button_build_reminder"
-        android:layout_width="136dp"
-        android:layout_height="62dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="19dp"
-        android:text="Create Reminder" />
+        android:layout_marginTop="40dp"
+        tools:context="com.example.currentplacedetailsonmap.MapsActivityCurrentPlace" />
 
 </RelativeLayout>
